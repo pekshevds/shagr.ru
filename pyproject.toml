@@ -1,0 +1,25 @@
+[project]
+name = "shagr-ru"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "django==4.1.10",
+    "django-cors-headers==4.5.0",
+    "dotenv==0.9.9",
+    "mypy>=1.19.0",
+    "mysql-connector-python==9.4.0",
+    "mysqlclient==2.2.7",
+    "pillow==11.3.0",
+    "pydantic==2.11.9",
+    "pyjwt[crypto]==2.10.1",
+    "transliterate>=1.10.2",
+]
+
+[tool.mypy]
+igmore_missing_imports = true
+disallow_incomplete_defs = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+exclude = [".venv"]
