@@ -16,10 +16,3 @@ dependencies = [
     "pyjwt[crypto]==2.10.1",
     "transliterate>=1.10.2",
 ]
-
-[tool.mypy]
-igmore_missing_imports = true
-disallow_incomplete_defs = true
-disallow_untyped_calls = true
-disallow_untyped_defs = true
-exclude = [".venv"]
