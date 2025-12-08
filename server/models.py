@@ -7,7 +7,12 @@ from server.services import ganerate_new_number
 
 class ActiveObjectsManager(models.Manager):
     def get_queryset(self) -> models.QuerySet:
-        return super().get_queryset().filter(is_active=True).order_by("sort_ordering")
+        return (
+            super()
+            .get_queryset()
+            .filter(is_active=True)
+            .order_by("sort_ordering", "name")
+        )
 
 
 class Record(models.Model):
