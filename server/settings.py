@@ -23,12 +23,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = environ.get("SECRET_KEY")
+SECRET_KEY = environ.get("SECRET_KEY", "")
+TOKEN_EXP_MIN = int(environ.get("TOKEN_EXP_MIN", "1440"))
+ITEMS_PER_PAGE = int(environ.get("ITEMS_PER_PAGE", "24"))
+BACKEND_NAME = "backend.shagr.ru"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS: list[str] = []
+ALLOWED_HOSTS: list[str] = [
+    "127.0.0.1",
+    "localhost",
+    BACKEND_NAME,
+    f"www.{BACKEND_NAME}",
+]
 
 
 # Application definition
@@ -40,11 +48,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -76,13 +86,63 @@ WSGI_APPLICATION = "server.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+DEV = eval(environ.get("DEV", "True"))
+if DEV:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": environ.get("DB_ENGINE"),
+            "HOST": environ.get("DB_HOST"),
+            "NAME": environ.get("DB_NAME"),
+            "USER": environ.get("DB_USER"),
+            "PASSWORD": environ.get("DB_PASSWORD"),
+            "OPTION": {
+                "init_command": "SET sql_mode='STRICT_TRANS_TABLES', innodb_strict_mode=1",
+                "charset": "utf8mb4",
+                "autocommit": True,
+            },
+        }
+    }
 
+logging_path = BASE_DIR / "logs/"
+if not Path.exists(logging_path):
+    Path.mkdir(logging_path)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {asctime} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "api_app": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": logging_path / "api.log",
+            "formatter": "simple",
+        },
+    },
+    "loggers": {
+        "api_app.views": {
+            "handlers": ["api_app"],
+            "level": "INFO",
+            "propagate": True,
+        },
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -106,21 +166,39 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ru-ru"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Moscow"
 
 USE_I18N = True
 
 USE_TZ = True
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "public/static/"
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "public/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = environ.get("EMAIL_HOST")
+EMAIL_PORT = int(environ.get("EMAIL_PORT", "587"))
+EMAIL_HOST_USER = environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = eval(environ.get("EMAIL_USE_TLS", "True"))
+EMAIL_USE_SSL = eval(environ.get("EMAIL_USE_SSL", "True"))
+DEFAULT_FROM_EMAIL = environ.get("EMAIL_HOST_USER")
+
+EMAIL_TO_INCOMING_REQUEST = environ.get("EMAIL_TO_INCOMING_REQUEST")
+EMAIL_TO_FEEDBACK = environ.get("EMAIL_TO_FEEDBACK")
