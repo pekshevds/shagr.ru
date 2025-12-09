@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "api_app.apps.ApiAppConfig",
     "catalog_app.apps.CatalogAppConfig",
+    "client_app.apps.ClientAppConfig",
 ]
 
 MIDDLEWARE = [
