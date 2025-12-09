@@ -16,6 +16,9 @@ class Organization(Directory):
 
 
 class Client(Directory):
+    email = models.EmailField(
+        verbose_name="Адрес эл.почты", max_length=150, unique=True, default=""
+    )
     organization = models.ForeignKey(
         Organization,
         verbose_name="Организация",

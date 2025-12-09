@@ -20,7 +20,7 @@ def check_clients_pin(client: Client, code: str) -> bool:
 
 
 def check_credentials(client_schema: ClientCredentialSchema) -> bool:
-    client = client_repository.fetch_client_by_name(name=client_schema.name)
+    client = client_repository.fetch_client_by_email(email=client_schema.email)
     if not client:
         return False
     if not check_clients_pin(client, client_schema.pin):
@@ -32,12 +32,12 @@ def fetch_token_by_credentials(client_schema: ClientCredentialSchema) -> str:
     if not check_credentials(client_schema):
         return ""
     return HS256.get_token(
-        client_schema.name, settings.SECRET_KEY, settings.TOKEN_EXP_MIN
+        client_schema.email, settings.SECRET_KEY, settings.TOKEN_EXP_MIN
     )
 
 
 def fetch_pin_by_client(client_schema: ClientSchemaIncoming) -> str:
-    client = client_repository.fetch_client_by_name(name=client_schema.name)
+    client = client_repository.fetch_client_by_email(email=client_schema.email)
     if not client:
         return ""
     return client_repository.create_new_pin(client)

@@ -13,7 +13,7 @@ class OrganizationSchemaOutgoing(BaseModel):
 
 
 class ClientSchemaIncoming(BaseModel):
-    name: str = Field()
+    email: str = Field()
 
 
 class ClientSchemaOutgoing(BaseModel):
@@ -26,7 +26,7 @@ class PinSchema(BaseModel):
 
 
 class ClientCredentialSchema(BaseModel):
-    name: str = Field()
+    email: str = Field()
     pin: str = Field()
 
 

@@ -27,7 +27,11 @@ class ClientAdmin(admin.ModelAdmin):
             None,
             {
                 "fields": (
-                    "name",
+                    (
+                        "name",
+                        "email",
+                    ),
+                    "organization",
                     "is_active",
                     "comment",
                 )
@@ -36,12 +40,15 @@ class ClientAdmin(admin.ModelAdmin):
     )
     list_display = (
         "name",
+        "email",
+        "organization",
         "is_active",
         "created_at",
         "updated_at",
         "id",
     )
     search_fields = ("name",)
+    list_filter = ("organization",)
     actions = [make_active]
 
 

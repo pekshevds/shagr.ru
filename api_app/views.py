@@ -41,7 +41,7 @@ class PinView(View):
         pin = client_service.fetch_pin_by_client(client_schema)
         if pin:
             pin_schema = SendEmailSchemaOutgoing(
-                client_name=client_schema.name, email=client_schema.name, pin=pin
+                client_name=client_schema.email, email=client_schema.email, pin=pin
             )
             client_service.send_pin_by_email(pin_schema)
             return JsonResponse({}, status=200)

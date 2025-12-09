@@ -6,7 +6,11 @@ from client_app.models import Client, Pin
 
 
 def fetch_client_by_name(name: str) -> Client | None:
-    return Client.objects.filter(name=name).first()
+    return Client.active_objects.filter(name=name).first()
+
+
+def fetch_client_by_email(email: str) -> Client | None:
+    return Client.active_objects.filter(email=email).first()
 
 
 def create_new_pin(client: Client) -> str:
