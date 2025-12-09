@@ -49,7 +49,10 @@ class Directory(Record):
         return f"{self.name}"
 
     class Meta:
-        ordering = ("sort_ordering",)
+        ordering = (
+            "sort_ordering",
+            "name",
+        )
         abstract = True
 
 
