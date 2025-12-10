@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = environ.get("SECRET_KEY", "")
 TOKEN_EXP_MIN = int(environ.get("TOKEN_EXP_MIN", "1440"))
 ITEMS_PER_PAGE = int(environ.get("ITEMS_PER_PAGE", "24"))
-BACKEND_NAME = "backend.shagr.annasoft.site"
+BACKEND_NAME = environ.get("BACKEND_NAME", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
