@@ -1,5 +1,6 @@
 from django.contrib import admin
 from order_app.models import Order, OrderItem, CartItem, WishItem, StatusOrder
+from client_app.models import Organization
 
 
 @admin.register(StatusOrder)
@@ -50,6 +51,7 @@ class OrderAdmin(admin.ModelAdmin):
         "__str__",
         "is_active",
         "client",
+        "organization",
         "status",
         "updated_at",
         "id",
@@ -57,11 +59,19 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = (
         "client",
         "status",
+        "client__organization",
     )
     readonly_fields = (
         "number",
         "date",
     )
+
+    def organization(self, obj: Order) -> Organization | None:
+        if obj.client:
+            return obj.client.organization
+        return None
+
+    setattr(organization, "organization", "Организация")
 
 
 @admin.register(CartItem)
