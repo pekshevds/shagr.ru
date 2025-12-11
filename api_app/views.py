@@ -5,13 +5,19 @@ from django.http import HttpRequest, JsonResponse
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from services import catalog_service, client_service
+from services import catalog_service, client_service, order_service
 from client_app.schemas import (
     ClientSchemaIncoming,
     ClientCredentialSchema,
     TokenSchema,
     SendEmailSchemaOutgoing,
 )
+from order_app.schemas import (
+    AddCartItemSchemaIncoming,
+    NewOrderIncoming,
+    OrderStatusListUpdateSchemaIncoming,
+)
+from client_app.models import Client
 
 logger = logging.getLogger(__name__)
 
@@ -98,3 +104,127 @@ class GoodView(View):
             return JsonResponse({}, status=200)
         goods = catalog_service.fetch_all_goods(page_number)
         return JsonResponse(goods.model_dump(), status=200)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class CartView(View):
+    @auth()
+    def get(self, request: HttpRequest, client: Client) -> JsonResponse:
+        items = order_service.fetch_cart_items(client)
+        return JsonResponse(items.model_dump(), status=200)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class CartSetView(View):
+    @auth()
+    def post(self, request: HttpRequest, client: Client) -> JsonResponse:
+        data = AddCartItemSchemaIncoming.model_validate_json(
+            request.body.decode("utf-8")
+        )
+        order_service.set_item_to_cart(data, client)
+        return JsonResponse({}, status=200)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class CartAddView(View):
+    @auth()
+    def post(self, request: HttpRequest, client: Client) -> JsonResponse:
+        data = AddCartItemSchemaIncoming.model_validate_json(
+            request.body.decode("utf-8")
+        )
+        order_service.add_item_to_cart(data, client)
+        return JsonResponse({}, status=200)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class CartDeleteView(View):
+    @auth()
+    def post(self, request: HttpRequest, client: Client) -> JsonResponse:
+        data = AddCartItemSchemaIncoming.model_validate_json(
+            request.body.decode("utf-8")
+        )
+        order_service.drop_item_from_cart(data, client)
+        return JsonResponse({}, status=200)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class CartClearView(View):
+    @auth()
+    def get(self, request: HttpRequest, client: Client) -> JsonResponse:
+        order_service.clear_cart(client)
+        return JsonResponse({}, status=200)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class WishView(View):
+    @auth()
+    def get(self, request: HttpRequest, client: Client) -> JsonResponse:
+        items = order_service.fetch_wish_items(client)
+        return JsonResponse(items.model_dump(), status=200)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class WishSetView(View):
+    @auth()
+    def post(self, request: HttpRequest, client: Client) -> JsonResponse:
+        data = AddCartItemSchemaIncoming.model_validate_json(
+            request.body.decode("utf-8")
+        )
+        order_service.set_item_to_wish(data, client)
+        return JsonResponse({}, status=200)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class WishDeleteView(View):
+    @auth()
+    def post(self, request: HttpRequest, client: Client) -> JsonResponse:
+        data = AddCartItemSchemaIncoming.model_validate_json(
+            request.body.decode("utf-8")
+        )
+        order_service.drop_item_from_wish(data, client)
+        return JsonResponse({}, status=200)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class WishClearView(View):
+    @auth()
+    def get(self, request: HttpRequest, client: Client) -> JsonResponse:
+        order_service.clear_wish(client)
+        return JsonResponse({}, status=200)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class OrderView(View):
+    @auth()
+    def get(self, request: HttpRequest, client: Client) -> JsonResponse:
+        date_from = request.GET.get("date_from", None)
+        date_to = request.GET.get("date_to", None)
+        new_orders = order_service.fetch_orders(client, date_from, date_to)
+        return JsonResponse(new_orders.model_dump(), status=200)
+
+    @auth()
+    def post(self, request: HttpRequest, client: Client) -> JsonResponse:
+        data = NewOrderIncoming.model_validate_json(request.body.decode("utf-8"))
+        order = order_service.create_order(data)
+        if order:
+            return JsonResponse(order.model_dump(), status=200)
+        return JsonResponse({}, status=400)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class NewOrderView(View):
+    @auth()
+    def get(self, request: HttpRequest, client: Client) -> JsonResponse:
+        new_orders = order_service.fetch_new_orders()
+        return JsonResponse(new_orders.model_dump(), status=200)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class UpdateOrderStatusView(View):
+    @auth()
+    def post(self, request: HttpRequest, client: Client) -> JsonResponse:
+        data = OrderStatusListUpdateSchemaIncoming.model_validate_json(
+            request.body.decode("utf-8")
+        )
+        order_service.update_order_statuses(data)
+        return JsonResponse({}, status=200)
