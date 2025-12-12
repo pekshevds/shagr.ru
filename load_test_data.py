@@ -1,3 +1,4 @@
+from random import randint
 from pathlib import Path
 from json import load
 from services import catalog_service
@@ -14,11 +15,11 @@ def load_test_data() -> None:
                 name=item.get("name"),
                 art=item.get("art"),
                 okei=item.get("okei"),
-                price=item.get("price"),
+                price=float(randint(10, 1000)),
                 description=item.get("description")[2048]
                 if len(item.get("description")) > 2048
                 else item.get("description"),
-                balance=item.get("balance"),
+                balance=float(randint(1, 50)),
                 is_active=item.get("is_active"),
             )
             for item in load(file)

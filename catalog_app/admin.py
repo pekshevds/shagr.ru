@@ -58,6 +58,7 @@ class GoodAdmin(admin.ModelAdmin):
                         "balance",
                         "price",
                     ),
+                    "description",
                     (
                         "is_active",
                         "sort_ordering",
