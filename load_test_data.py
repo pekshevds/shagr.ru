@@ -14,6 +14,7 @@ def load_test_data() -> None:
                 id=item.get("id"),
                 name=item.get("name"),
                 art=item.get("art"),
+                code=item.get("code"),
                 okei=item.get("okei"),
                 price=float(randint(10, 1000)),
                 description=item.get("description")[2048]
