@@ -47,7 +47,7 @@ def client_by_token(token: str) -> Client | None:
     payload = HS256.extract_data(token, settings.SECRET_KEY)
     if not payload:
         return None
-    return client_repository.fetch_client_by_name(name=payload.name)
+    return client_repository.fetch_client_by_email(email=payload.name)
 
 
 def _extract_token_from(token_storage: dict[str, Any]) -> str:
