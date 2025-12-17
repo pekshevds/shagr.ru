@@ -92,7 +92,7 @@ def set_item_to_cart(cart_owner: Client, good: Good, quantity: float) -> None:
         item = CartItem.objects.create()
         item.client = cart_owner
         item.good = good
-    item.quantity = decimal.Decimal(float(quantity)) * good.k
+    item.quantity = decimal.Decimal(float(quantity))
     item.save()
 
 
@@ -102,7 +102,7 @@ def add_item_to_cart(cart_owner: Client, good: Good, quantity: float) -> None:
         item = CartItem.objects.create()
         item.client = cart_owner
         item.good = good
-    item.quantity += decimal.Decimal(float(quantity)) * good.k
+    item.quantity += decimal.Decimal(float(quantity))
     item.save()
 
 
