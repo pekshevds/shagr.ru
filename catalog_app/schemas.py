@@ -26,6 +26,10 @@ class GoodSchemaIncoming(BaseModel):
     is_active: bool = Field(default=False)
 
 
+class GoodListSchemaIncoming(BaseModel):
+    goods: list[GoodSchemaIncoming] = Field()
+
+
 class GoodSchemaOutgoing(BaseModel):
     id: str = Field()
     name: str = Field(max_length=150)

@@ -18,6 +18,7 @@ from order_app.schemas import (
     OrderStatusListUpdateSchemaIncoming,
 )
 from client_app.models import Client
+from catalog_app.schemas import GoodListSchemaIncoming
 
 logger = logging.getLogger(__name__)
 
@@ -104,6 +105,17 @@ class GoodView(View):
             return JsonResponse({}, status=200)
         goods = catalog_service.fetch_all_goods(page_number)
         return JsonResponse(goods.model_dump(), status=200)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class UploadCatalogView(View):
+    @auth()
+    def post(self, request: HttpRequest) -> JsonResponse:
+        goods_list = GoodListSchemaIncoming.model_validate_json(
+            request.body.decode("utf-8")
+        )
+        catalog_service.create_or_update_goods(goods_list)
+        return JsonResponse({}, status=200)
 
 
 @method_decorator(csrf_exempt, name="dispatch")

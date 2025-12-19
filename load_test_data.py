@@ -2,7 +2,7 @@ from random import randint
 from pathlib import Path
 from json import load
 from services import catalog_service
-from catalog_app.schemas import GoodSchemaIncoming
+from catalog_app.schemas import GoodSchemaIncoming, GoodListSchemaIncoming
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -25,4 +25,4 @@ def load_test_data() -> None:
             )
             for item in load(file)
         ]
-        catalog_service.create_or_update_goods(goods_list)
+        catalog_service.create_or_update_goods(GoodListSchemaIncoming(goods=goods_list))

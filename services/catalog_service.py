@@ -4,7 +4,7 @@ from catalog_app.models import Good
 from catalog_app.schemas import (
     CategorySchemaOutgoing,
     CategoryListSchemaOutgoing,
-    GoodSchemaIncoming,
+    GoodListSchemaIncoming,
     GoodSchemaOutgoing,
     GoodListSchemaOutgoing,
 )
@@ -103,16 +103,16 @@ def fetch_good_by_slug(slug: str) -> GoodSchemaOutgoing | None:
     return result
 
 
-def create_or_update_goods(goods_list: list[GoodSchemaIncoming]) -> None:
+def create_or_update_goods(goods_list: GoodListSchemaIncoming) -> None:
     ids = [
         str(_.id)
         for _ in catalog_repository.fetch_goods_by_ids(
-            [str(item.id) for item in goods_list]
+            [str(item.id) for item in goods_list.goods]
         )
     ]
     to_create = []
     to_update = []
-    for _ in goods_list:
+    for _ in goods_list.goods:
         item = Good(**_.model_dump())
         if item.id in ids:
             to_update.append(item)

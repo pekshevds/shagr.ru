@@ -16,6 +16,7 @@ from api_app.views import (
     OrderView,
     NewOrderView,
     UpdateOrderStatusView,
+    UploadCatalogView,
 )
 
 app_name = "api_app"
@@ -39,4 +40,5 @@ urlpatterns = [
     path("v1/orders/", OrderView.as_view()),
     path("v1/orders/get-new/", NewOrderView.as_view()),
     path("v1/orders/update-statuses/", UpdateOrderStatusView.as_view()),
+    path("v1/catalog/upload/", UploadCatalogView.as_view()),
 ]
