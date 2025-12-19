@@ -110,7 +110,7 @@ class GoodView(View):
 @method_decorator(csrf_exempt, name="dispatch")
 class UploadCatalogView(View):
     @auth()
-    def post(self, request: HttpRequest) -> JsonResponse:
+    def post(self, request: HttpRequest, client: Client) -> JsonResponse:
         goods_list = GoodListSchemaIncoming.model_validate_json(
             request.body.decode("utf-8")
         )
