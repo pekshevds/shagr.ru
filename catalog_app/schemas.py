@@ -1,11 +1,16 @@
 from pydantic import BaseModel, Field
 
 
+class ImageSchemaOutgoing(BaseModel):
+    path: str = Field(max_length=2048, default="")
+
+
 class CategorySchemaOutgoing(BaseModel):
     id: str = Field()
     name: str = Field(max_length=150)
     slug: str = Field(max_length=300, default="")
     parent_slug: str = Field(max_length=300, default="")
+    preview_image: ImageSchemaOutgoing | None = Field(default=None)
     childs: list["CategorySchemaOutgoing"] | None = Field(default=None)
 
 
@@ -42,6 +47,8 @@ class GoodSchemaOutgoing(BaseModel):
     description: str = Field(max_length=2048, default="")
     balance: float = Field(default=0)
     is_active: bool = Field(default=False)
+    preview_image: ImageSchemaOutgoing | None = Field(default=None)
+    images: list[ImageSchemaOutgoing] | None = Field(default=None)
     seo_title: str = Field(default="")
     seo_description: str = Field(default="")
     seo_keywords: str = Field(default="")

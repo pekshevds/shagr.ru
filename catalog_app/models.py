@@ -1,7 +1,15 @@
 from transliterate import translit
 from django.utils.text import slugify
 from django.db import models
-from server.models import Directory
+from server.models import Directory, Record
+
+
+class Image(Directory):
+    image = models.ImageField(verbose_name="Изображение", upload_to="catalog/images/")
+
+    class Meta:
+        verbose_name = "Изображение"
+        verbose_name_plural = "Изображения"
 
 
 class Category(Directory):
@@ -20,6 +28,9 @@ class Category(Directory):
         on_delete=models.PROTECT,
         null=True,
         blank=True,
+    )
+    preview_image = models.ForeignKey(
+        Image, verbose_name="Превью", on_delete=models.PROTECT, null=True, blank=True
     )
 
     def save(self) -> None:
@@ -84,6 +95,9 @@ class Good(Directory):
         null=True,
         blank=True,
     )
+    preview_image = models.ForeignKey(
+        Image, verbose_name="Превью", on_delete=models.PROTECT, null=True, blank=True
+    )
     description = models.CharField(
         verbose_name="Описание", max_length=2048, blank=True, null=False, default=""
     )
@@ -110,3 +124,16 @@ class Good(Directory):
     class Meta:
         verbose_name = "Номенклатура"
         verbose_name_plural = "Номенклатура"
+
+
+class GoodImage(Record):
+    good = models.ForeignKey(
+        Good, verbose_name="Товар", on_delete=models.CASCADE, related_name="images"
+    )
+    image = models.ForeignKey(
+        Image, verbose_name="Изображение", on_delete=models.PROTECT
+    )
+
+    class Meta:
+        verbose_name = "Изображение товара"
+        verbose_name_plural = "Изображения товаров"
