@@ -12,6 +12,7 @@ class StatusSchemaIncoming(BaseModel):
 class StatusSchemaOutgoing(BaseModel):
     id: str = Field()
     name: str = Field()
+    is_closed: bool = Field()
 
 
 class OrderItemSchemaOutgoing(BaseModel):

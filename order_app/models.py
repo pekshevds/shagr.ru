@@ -5,6 +5,8 @@ from client_app.models import Client
 
 
 class StatusOrder(Directory):
+    is_closed = models.BooleanField(verbose_name="Флаг закрытого заказа", default=False)
+
     class Meta:
         verbose_name = "Статус заказа"
         verbose_name_plural = "Статусы заказов"

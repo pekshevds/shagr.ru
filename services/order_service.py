@@ -117,6 +117,46 @@ def fetch_orders(
     return OrderListSchemaOutgoing(orders=orders)
 
 
+def fetch_active_orders(
+    client: Client, date_from: Optional[datetime], date_to: Optional[datetime]
+) -> OrderListSchemaOutgoing:
+    orders = []
+    statuses = [
+        status
+        for status in order_repository.fetch_all_statuses()
+        if not status.is_closed
+    ]
+    for order in order_repository.fetch_orders(client, date_from, date_to).filter(
+        status__in=statuses
+    ):
+        order_schema = order_converter.order_to_outgoing_schema(order)
+        order_schema.items = [
+            order_converter.order_item_to_outgoing_schema(item)
+            for item in order.items.all()
+        ]
+        orders.append(order_schema)
+    return OrderListSchemaOutgoing(orders=orders)
+
+
+def fetch_closed_orders(
+    client: Client, date_from: Optional[datetime], date_to: Optional[datetime]
+) -> OrderListSchemaOutgoing:
+    orders = []
+    statuses = [
+        status for status in order_repository.fetch_all_statuses() if status.is_closed
+    ]
+    for order in order_repository.fetch_orders(client, date_from, date_to).filter(
+        status__in=statuses
+    ):
+        order_schema = order_converter.order_to_outgoing_schema(order)
+        order_schema.items = [
+            order_converter.order_item_to_outgoing_schema(item)
+            for item in order.items.all()
+        ]
+        orders.append(order_schema)
+    return OrderListSchemaOutgoing(orders=orders)
+
+
 def create_or_update_statuses(statuses_list: list[StatusSchemaIncoming]) -> None:
     ids = [
         str(_.id)

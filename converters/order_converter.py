@@ -26,7 +26,11 @@ def order_to_outgoing_schema(order: Order) -> OrderSchemaOutgoing:
         date=order.date,
         comment=order.comment,
         client=client_to_outgoing_schema(order.client),
-        status=StatusSchemaOutgoing(id=str(order.status.id), name=order.status.name),
+        status=StatusSchemaOutgoing(
+            id=str(order.status.id),
+            name=order.status.name,
+            is_closed=order.status.is_closed,
+        ),
         items=[
             order_item_to_outgoing_schema(order_item)
             for order_item in order.items.all()
