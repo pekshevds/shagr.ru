@@ -17,12 +17,10 @@ from order_app.models import StatusOrder, Order
 from client_app.models import Client
 from repositories import (
     order_repository,
-    client_repository,
     catalog_repository,
 )
 
 from catalog_app.models import Good
-from client_app.models import Client
 from converters import order_converter, catalog_converter
 
 
