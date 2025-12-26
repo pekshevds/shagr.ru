@@ -21,8 +21,8 @@ class Order(Document):
         verbose_name="Клиент",
         related_name="orders",
         on_delete=models.PROTECT,
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
     )
     status = models.ForeignKey(
         StatusOrder,
