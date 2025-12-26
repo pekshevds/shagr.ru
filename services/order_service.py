@@ -22,6 +22,7 @@ from repositories import (
 )
 
 from catalog_app.models import Good
+from client_app.models import Client
 from converters import order_converter, catalog_converter
 
 
@@ -77,15 +78,14 @@ def _fill_order_items_by_incoming_data(
     return data
 
 
-def create_order(incoming_data: NewOrderIncoming) -> OrderSchemaOutgoing | None:
+def create_order(
+    client: Client, incoming_data: NewOrderIncoming
+) -> OrderSchemaOutgoing | None:
     goods = _extract_goods_from_incoming_data(incoming_data)
     if not goods:
         return None
     order_items = _fill_order_items_by_incoming_data(incoming_data, goods)
     if not order_items:
-        return None
-    client = client_repository.fetch_client_by_email(incoming_data.email)
-    if not client:
         return None
     order = order_repository.create_order(order_items, client)
     return order_converter.order_to_outgoing_schema(order)

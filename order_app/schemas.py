@@ -45,7 +45,6 @@ class NewOrderItemIncoming(BaseModel):
 
 
 class NewOrderIncoming(BaseModel):
-    email: str = Field()
     items: list[NewOrderItemIncoming] = Field()
 
 

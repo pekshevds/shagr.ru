@@ -217,7 +217,7 @@ class OrderView(View):
     @auth()
     def post(self, request: HttpRequest, client: Client) -> JsonResponse:
         data = NewOrderIncoming.model_validate_json(request.body.decode("utf-8"))
-        order = order_service.create_order(data)
+        order = order_service.create_order(client, data)
         if order:
             return JsonResponse(order.model_dump(), status=200)
         return JsonResponse({}, status=400)
