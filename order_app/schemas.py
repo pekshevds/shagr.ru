@@ -54,9 +54,13 @@ class NewOrderIncoming(BaseModel):
 
 class CartItemSchemaOutgoing(BaseModel):
     good: GoodSchemaOutgoing = Field()
+    okei: str = Field()
     quantity: float = Field(default=0.0)
     price: float = Field(default=0.0)
     amount: float = Field(default=0.0)
+    vat: float = Field()
+    price_without_vat: float = Field()
+    amount_without_vat: float = Field()
 
 
 class CartItemListSchemaOutgoing(BaseModel):
@@ -73,6 +77,9 @@ class WishItemSchemaOutgoing(BaseModel):
     quantity: float = Field(default=0.0)
     price: float = Field(default=0.0)
     amount: float = Field(default=0.0)
+    vat: float = Field()
+    price_without_vat: float = Field()
+    amount_without_vat: float = Field()
 
 
 class WishItemListSchemaOutgoing(BaseModel):

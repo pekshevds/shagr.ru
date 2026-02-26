@@ -177,15 +177,7 @@ def fetch_cart_items(client: Client) -> CartItemListSchemaOutgoing:
     cart_items = order_repository.fetch_cart_items(client)
     items = []
     for cart_item in cart_items:
-        good = cart_item.good
-        price = good.price
-        quantity = cart_item.quantity
-        cart_item_schema = CartItemSchemaOutgoing(
-            good=catalog_converter.good_to_outgoing_schema(good),
-            quantity=quantity,
-            price=price,
-            amount=price * quantity,
-        )
+        cart_item_schema = order_converter.cart_item_to_outgoing_schema(cart_item)
         items.append(cart_item_schema)
     return CartItemListSchemaOutgoing(items=items)
 
