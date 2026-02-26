@@ -14,7 +14,7 @@ def _calculate_vat(value: float, vat: float) -> float:
 
 
 def order_item_to_outgoing_schema(order_item: OrderItem) -> OrderItemSchemaOutgoing:
-    vat = order_item.vat.value if order_item else 0.0
+    vat = order_item.vat.value if order_item.vat else 0.0
     model = OrderItemSchemaOutgoing(
         id=str(order_item.id),
         good=good_to_outgoing_schema(order_item.good),
