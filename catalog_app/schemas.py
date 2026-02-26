@@ -1,6 +1,12 @@
 from pydantic import BaseModel, Field
 
 
+class VatSchemaOutgoing(BaseModel):
+    id: str = Field()
+    name: str = Field(max_length=150)
+    value: float = Field(default=0)
+
+
 class ImageSchemaOutgoing(BaseModel):
     path: str = Field(max_length=2048, default="")
 
@@ -46,6 +52,7 @@ class GoodSchemaOutgoing(BaseModel):
     price: float = Field(default=0)
     description: str = Field(max_length=2048, default="")
     balance: float = Field(default=0)
+    vat: float = Field(default=0)
     is_active: bool = Field(default=False)
     preview_image: ImageSchemaOutgoing | None = Field(default=None)
     images: list[ImageSchemaOutgoing] | None = Field(default=None)

@@ -26,6 +26,13 @@ class StatusOrderAdmin(admin.ModelAdmin):
 
 class OrderItemInLine(admin.TabularInline):
     model = OrderItem
+    fields = (
+        "good",
+        "vat",
+        "quantity",
+        "price",
+        "amount",
+    )
 
 
 @admin.register(Order)

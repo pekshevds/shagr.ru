@@ -2,6 +2,8 @@ from transliterate import translit
 from django.utils.text import slugify
 from django.db import models
 from server.models import Directory, Record
+from const_app.models import Vat
+from repositories.const_repository import fetch_last_vat
 
 
 class Image(Directory):
@@ -50,6 +52,7 @@ class Good(Directory):
         null=False,
         default="",
     )
+
     art = models.CharField(
         verbose_name="Артикул",
         max_length=50,
@@ -94,6 +97,14 @@ class Good(Directory):
         on_delete=models.PROTECT,
         null=True,
         blank=True,
+    )
+    vat = models.ForeignKey(
+        Vat,
+        verbose_name="Ставка НДС",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        default=fetch_last_vat,
     )
     preview_image = models.ForeignKey(
         Image, verbose_name="Превью", on_delete=models.PROTECT, null=True, blank=True

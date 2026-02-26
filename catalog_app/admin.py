@@ -101,7 +101,7 @@ class GoodAdmin(admin.ModelAdmin):
                         "code",
                         "short_name",
                     ),
-                    ("category",),
+                    ("category", "vat"),
                     (
                         "preview_image",
                         "preview",
@@ -137,6 +137,7 @@ class GoodAdmin(admin.ModelAdmin):
         "okei",
         "is_active",
         "category",
+        "vat",
         "balance",
         "price",
         "preview",
@@ -147,7 +148,10 @@ class GoodAdmin(admin.ModelAdmin):
     )
     readonly_fields = ("preview",)
     search_fields = ("name", "art")
-    list_filter = ("is_active",)
+    list_filter = (
+        "is_active",
+        "vat",
+    )
     actions = [make_active]
 
     def preview(self, obj: Good) -> str:

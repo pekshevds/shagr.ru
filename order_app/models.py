@@ -1,7 +1,8 @@
 from django.db import models
 from server.models import Directory, Document, Record
-from catalog_app.models import Good
+from catalog_app.models import Good, Vat
 from client_app.models import Client
+from repositories import const_repository
 
 
 class StatusOrder(Directory):
@@ -51,6 +52,14 @@ class OrderItem(Record):
         on_delete=models.PROTECT,
         blank=True,
         null=True,
+    )
+    vat = models.ForeignKey(
+        Vat,
+        verbose_name="Ставка НДС",
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+        default=const_repository.fetch_last_vat,
     )
     quantity = models.DecimalField(
         verbose_name="Количество",

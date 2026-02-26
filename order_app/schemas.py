@@ -18,9 +18,13 @@ class StatusSchemaOutgoing(BaseModel):
 class OrderItemSchemaOutgoing(BaseModel):
     id: str = Field()
     good: GoodSchemaOutgoing = Field()
+    okei: str = Field()
     quantity: float = Field()
     price: float = Field()
     amount: float = Field()
+    vat: float = Field()
+    price_without_vat: float = Field()
+    amount_without_vat: float = Field()
 
 
 class OrderSchemaOutgoing(BaseModel):

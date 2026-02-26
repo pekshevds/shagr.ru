@@ -50,6 +50,7 @@ def good_to_outgoing_schema(good: Good) -> GoodSchemaOutgoing:
         code=good.code,
         okei=good.okei,
         price=price,
+        vat=good.vat.value if good.vat else 0.0,
         description=good.description,
         balance=balance,
         is_active=good.is_active,
