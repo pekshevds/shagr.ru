@@ -19,7 +19,7 @@ def cart_item_to_outgoing_schema(cart_item: CartItem) -> CartItemSchemaOutgoing:
     _ = fetch_last_vat()
     vat = float(_.value) if _ else 0.0
     price = float(cart_item.good.price)
-    amount = float(price * cart_item.quantity)
+    amount = price * float(cart_item.quantity)
     okei = cart_item.good.okei
     model = CartItemSchemaOutgoing(
         good=good_to_outgoing_schema(cart_item.good),
