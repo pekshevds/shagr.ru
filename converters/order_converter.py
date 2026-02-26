@@ -7,6 +7,7 @@ from order_app.schemas import (
 )
 from converters.catalog_converter import good_to_outgoing_schema
 from converters.client_converter import client_to_outgoing_schema
+from repositories.const_repository import fetch_last_vat
 
 
 def _calculate_vat(value: float, vat: float) -> float:
@@ -15,7 +16,8 @@ def _calculate_vat(value: float, vat: float) -> float:
 
 
 def cart_item_to_outgoing_schema(cart_item: CartItem) -> CartItemSchemaOutgoing:
-    vat = float(cart_item.vat.value) if cart_item.vat else 0.0
+    _ = fetch_last_vat()
+    vat = _.value if _ else 0.0
     model = CartItemSchemaOutgoing(
         good=good_to_outgoing_schema(cart_item.good),
         okei=cart_item.good.okei,
