@@ -17,7 +17,7 @@ def _calculate_vat(value: float, vat: float) -> float:
 
 def cart_item_to_outgoing_schema(cart_item: CartItem) -> CartItemSchemaOutgoing:
     _ = fetch_last_vat()
-    vat = _.value if _ else 0.0
+    vat = float(_.value) if _ else 0.0
     price = float(cart_item.good.price)
     amount = float(price * cart_item.quantity)
     okei = cart_item.good.okei
