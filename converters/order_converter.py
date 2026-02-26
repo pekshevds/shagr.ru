@@ -1,3 +1,4 @@
+from decimal import Decimal
 from order_app.models import Order, OrderItem
 from order_app.schemas import (
     OrderSchemaOutgoing,
@@ -8,13 +9,13 @@ from converters.catalog_converter import good_to_outgoing_schema
 from converters.client_converter import client_to_outgoing_schema
 
 
-def _calculate_vat(value: float, vat: float) -> float:
+def _calculate_vat(value: Decimal, vat: Decimal) -> Decimal:
     result = value - (value * vat / (100 + vat))
     return result
 
 
 def order_item_to_outgoing_schema(order_item: OrderItem) -> OrderItemSchemaOutgoing:
-    vat = float(order_item.vat.value) if order_item.vat else 0.0
+    vat = order_item.vat.value if order_item.vat else Decimal("0")
     model = OrderItemSchemaOutgoing(
         id=str(order_item.id),
         good=good_to_outgoing_schema(order_item.good),
@@ -22,9 +23,9 @@ def order_item_to_outgoing_schema(order_item: OrderItem) -> OrderItemSchemaOutgo
         quantity=order_item.quantity,
         price=order_item.price,
         amount=order_item.amount,
-        vat=vat,
-        price_without_vat=_calculate_vat(float(order_item.price), vat),
-        amount_without_vat=_calculate_vat(float(order_item.amount), vat),
+        vat=float(vat),
+        price_without_vat=float(_calculate_vat(order_item.price, vat)),
+        amount_without_vat=float(_calculate_vat(order_item.amount, vat)),
     )
     return model
 
