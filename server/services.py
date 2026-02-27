@@ -1,6 +1,11 @@
 from django.db.models import Model
 
 
+def calculate_vat(value: float, vat: float) -> float:
+    result = value - (value * vat / (100 + vat))
+    return result
+
+
 def ganerate_new_number(model: Model) -> int:
     """Вычисляет максимальный (последний) номер документа для модели model
     и возвращает следующий. Если последний номер 345, то вернет 346.

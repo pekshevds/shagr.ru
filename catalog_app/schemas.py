@@ -53,6 +53,7 @@ class GoodSchemaOutgoing(BaseModel):
     description: str = Field(max_length=2048, default="")
     balance: float = Field(default=0)
     vat: float = Field(default=0)
+    price_without_vat: float = Field(default=0)
     is_active: bool = Field(default=False)
     preview_image: ImageSchemaOutgoing | None = Field(default=None)
     images: list[ImageSchemaOutgoing] | None = Field(default=None)

@@ -5,6 +5,7 @@ from catalog_app.schemas import (
     GoodSchemaOutgoing,
     ImageSchemaOutgoing,
 )
+from server.services import calculate_vat
 
 
 def image_to_outgoing_schema(image: Image) -> ImageSchemaOutgoing | None:
@@ -39,8 +40,9 @@ def category_to_outgoing_schema(category: Category) -> CategorySchemaOutgoing:
 
 
 def good_to_outgoing_schema(good: Good) -> GoodSchemaOutgoing:
-    price = good.price
-    balance = good.balance
+    vat = float(good.vat.value) if good.vat else 0.0
+    price = float(good.price)
+    balance = float(good.balance)
     model = GoodSchemaOutgoing(
         id=str(good.id),
         name=good.name,
@@ -50,7 +52,8 @@ def good_to_outgoing_schema(good: Good) -> GoodSchemaOutgoing:
         code=good.code,
         okei=good.okei,
         price=price,
-        vat=good.vat.value if good.vat else 0.0,
+        vat=vat,
+        price_without_vat=round(calculate_vat(price, vat), 2),
         description=good.description,
         balance=balance,
         is_active=good.is_active,

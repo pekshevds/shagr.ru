@@ -10,11 +10,7 @@ from order_app.schemas import (
 from converters.catalog_converter import good_to_outgoing_schema
 from converters.client_converter import client_to_outgoing_schema
 from repositories.const_repository import fetch_last_vat
-
-
-def _calculate_vat(value: float, vat: float) -> float:
-    result = value - (value * vat / (100 + vat))
-    return result
+from server.services import calculate_vat
 
 
 def cart_item_to_outgoing_schema(cart_item: CartItem) -> CartItemSchemaOutgoing:
@@ -30,8 +26,8 @@ def cart_item_to_outgoing_schema(cart_item: CartItem) -> CartItemSchemaOutgoing:
         price=price,
         amount=amount,
         vat=vat,
-        price_without_vat=round(_calculate_vat(price, vat), 2),
-        amount_without_vat=round(_calculate_vat(amount, vat), 2),
+        price_without_vat=round(calculate_vat(price, vat), 2),
+        amount_without_vat=round(calculate_vat(amount, vat), 2),
         required_date=cart_item.required_date,
         possible_date=cart_item.possible_date,
     )
@@ -51,8 +47,8 @@ def wish_item_to_outgoing_schema(wish_item: WishItem) -> WishItemSchemaOutgoing:
         price=price,
         amount=amount,
         vat=vat,
-        price_without_vat=round(_calculate_vat(price, vat), 2),
-        amount_without_vat=round(_calculate_vat(amount, vat), 2),
+        price_without_vat=round(calculate_vat(price, vat), 2),
+        amount_without_vat=round(calculate_vat(amount, vat), 2),
     )
     return model
 
@@ -67,8 +63,8 @@ def order_item_to_outgoing_schema(order_item: OrderItem) -> OrderItemSchemaOutgo
         price=order_item.price,
         amount=order_item.amount,
         vat=vat,
-        price_without_vat=round(_calculate_vat(float(order_item.price), vat), 2),
-        amount_without_vat=round(_calculate_vat(float(order_item.amount), vat), 2),
+        price_without_vat=round(calculate_vat(float(order_item.price), vat), 2),
+        amount_without_vat=round(calculate_vat(float(order_item.amount), vat), 2),
         required_date=order_item.required_date,
         possible_date=order_item.possible_date,
     )
