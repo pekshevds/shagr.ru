@@ -25,8 +25,8 @@ class OrderItemSchemaOutgoing(BaseModel):
     vat: float = Field()
     price_without_vat: float = Field()
     amount_without_vat: float = Field()
-    required_date: datetime = Field()
-    possible_date: datetime = Field()
+    required_date: datetime | None = Field(default=None)
+    possible_date: datetime | None = Field(default=None)
 
 
 class OrderSchemaOutgoing(BaseModel):
@@ -63,8 +63,8 @@ class CartItemSchemaOutgoing(BaseModel):
     vat: float = Field()
     price_without_vat: float = Field()
     amount_without_vat: float = Field()
-    required_date: datetime = Field()
-    possible_date: datetime = Field()
+    required_date: datetime | None = Field(default=None)
+    possible_date: datetime | None = Field(default=None)
 
 
 class CartItemListSchemaOutgoing(BaseModel):
