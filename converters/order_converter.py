@@ -39,12 +39,12 @@ def wish_item_to_outgoing_schema(wish_item: WishItem) -> WishItemSchemaOutgoing:
     _ = fetch_last_vat()
     vat = float(_.value) if _ else 0.0
     price = float(wish_item.good.price)
-    amount = price * float(wish_item.quantity)
+    amount = price * 1
     okei = wish_item.good.okei
     model = WishItemSchemaOutgoing(
         good=good_to_outgoing_schema(wish_item.good),
         okei=okei,
-        quantity=wish_item.quantity,
+        quantity=1,
         price=price,
         amount=amount,
         vat=vat,
