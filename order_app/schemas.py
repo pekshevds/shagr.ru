@@ -35,6 +35,7 @@ class OrderSchemaOutgoing(BaseModel):
     date: datetime = Field()
     comment: str = Field(default="")
     client: ClientSchemaOutgoing = Field()
+    sap_number: str = Field(default="")
     status: StatusSchemaOutgoing = Field()
     items: list[OrderItemSchemaOutgoing] = Field(default=[])
 

@@ -57,6 +57,7 @@ class OrderAdmin(admin.ModelAdmin):
                     (
                         "number",
                         "date",
+                        "sap_number",
                     ),
                     "client",
                     "is_active",
@@ -70,6 +71,7 @@ class OrderAdmin(admin.ModelAdmin):
     )
     list_display = (
         "__str__",
+        "sap_number",
         "is_active",
         "client",
         "organization",
@@ -77,6 +79,7 @@ class OrderAdmin(admin.ModelAdmin):
         "updated_at",
         "id",
     )
+    search_fields = ("sap_number",)
     list_filter = (
         "client",
         "status",

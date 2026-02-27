@@ -35,6 +35,13 @@ class Order(Document):
         blank=True,
         null=True,
     )
+    sap_number = models.CharField(
+        verbose_name="Номер заказа из программы SAP",
+        max_length=25,
+        null=True,
+        blank=True,
+        default="",
+    )
 
     class Meta:
         verbose_name = "Заказ"

@@ -82,6 +82,7 @@ def order_to_outgoing_schema(order: Order) -> OrderSchemaOutgoing:
         date=order.date,
         comment=order.comment,
         client=client_to_outgoing_schema(order.client),
+        sap_number=order.sap_number,
         status=StatusSchemaOutgoing(
             id=str(order.status.id),
             name=order.status.name,
