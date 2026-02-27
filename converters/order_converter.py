@@ -1,10 +1,11 @@
-from order_app.models import Order, OrderItem, CartItem, WishItem
+from order_app.models import Order, OrderItem, CartItem, WishItem, StatusOrder
 from order_app.schemas import (
     OrderSchemaOutgoing,
     OrderItemSchemaOutgoing,
     StatusSchemaOutgoing,
     CartItemSchemaOutgoing,
     WishItemSchemaOutgoing,
+    AvailableStatusSchemaOutgoing,
 )
 from converters.catalog_converter import good_to_outgoing_schema
 from converters.client_converter import client_to_outgoing_schema
@@ -92,3 +93,12 @@ def order_to_outgoing_schema(order: Order) -> OrderSchemaOutgoing:
         ],
     )
     return model
+
+
+def available_status_to_outgoing_schema(
+    status: StatusOrder,
+) -> AvailableStatusSchemaOutgoing:
+    return AvailableStatusSchemaOutgoing(
+        id=str(status.id),
+        name=status.name,
+    )
