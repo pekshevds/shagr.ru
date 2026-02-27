@@ -74,6 +74,7 @@ class AddCartItemSchemaIncoming(BaseModel):
 
 class WishItemSchemaOutgoing(BaseModel):
     good: GoodSchemaOutgoing = Field()
+    okei: str = Field()
     quantity: float = Field(default=0.0)
     price: float = Field(default=0.0)
     amount: float = Field(default=0.0)

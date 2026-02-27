@@ -12,7 +12,6 @@
             "args": [
                 "runserver",
                 "--no-color",
-                "--noreload"
             ],
             "django": true,
             "justMyCode": true

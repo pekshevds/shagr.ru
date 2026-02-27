@@ -1,9 +1,10 @@
-from order_app.models import Order, OrderItem, CartItem
+from order_app.models import Order, OrderItem, CartItem, WishItem
 from order_app.schemas import (
     OrderSchemaOutgoing,
     OrderItemSchemaOutgoing,
     StatusSchemaOutgoing,
     CartItemSchemaOutgoing,
+    WishItemSchemaOutgoing,
 )
 from converters.catalog_converter import good_to_outgoing_schema
 from converters.client_converter import client_to_outgoing_schema
@@ -25,6 +26,25 @@ def cart_item_to_outgoing_schema(cart_item: CartItem) -> CartItemSchemaOutgoing:
         good=good_to_outgoing_schema(cart_item.good),
         okei=okei,
         quantity=cart_item.quantity,
+        price=price,
+        amount=amount,
+        vat=vat,
+        price_without_vat=round(_calculate_vat(price, vat), 2),
+        amount_without_vat=round(_calculate_vat(amount, vat), 2),
+    )
+    return model
+
+
+def wish_item_to_outgoing_schema(wish_item: WishItem) -> WishItemSchemaOutgoing:
+    _ = fetch_last_vat()
+    vat = float(_.value) if _ else 0.0
+    price = float(wish_item.good.price)
+    amount = price * float(wish_item.quantity)
+    okei = wish_item.good.okei
+    model = WishItemSchemaOutgoing(
+        good=good_to_outgoing_schema(wish_item.good),
+        okei=okei,
+        quantity=wish_item.quantity,
         price=price,
         amount=amount,
         vat=vat,

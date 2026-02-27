@@ -6,10 +6,8 @@ from order_app.schemas import (
     OrderSchemaOutgoing,
     OrderStatusListUpdateSchemaIncoming,
     NewOrderIncoming,
-    CartItemSchemaOutgoing,
     CartItemListSchemaOutgoing,
     AddCartItemSchemaIncoming,
-    WishItemSchemaOutgoing,
     WishItemListSchemaOutgoing,
 )
 
@@ -21,7 +19,7 @@ from repositories import (
 )
 
 from catalog_app.models import Good
-from converters import order_converter, catalog_converter
+from converters import order_converter
 
 
 def update_order_statuses(data: OrderStatusListUpdateSchemaIncoming) -> None:
@@ -205,18 +203,11 @@ def drop_item_from_cart(data: AddCartItemSchemaIncoming, client: Client) -> None
 
 
 def fetch_wish_items(client: Client) -> WishItemListSchemaOutgoing:
-    cart_items = order_repository.fetch_wish_items(client)
+    wist_items = order_repository.fetch_wish_items(client)
     items = []
-    for cart_item in cart_items:
-        good = cart_item.good
-        price = good.price
-        cart_item_schema = WishItemSchemaOutgoing(
-            good=catalog_converter.good_to_outgoing_schema(good),
-            quantity=0,
-            price=price,
-            amount=0,
-        )
-        items.append(cart_item_schema)
+    for wish_item in wist_items:
+        wish_item_schema = order_converter.wish_item_to_outgoing_schema(wish_item)
+        items.append(wish_item_schema)
     return WishItemListSchemaOutgoing(items=items)
 
 
