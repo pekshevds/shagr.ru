@@ -32,6 +32,8 @@ class OrderItemInLine(admin.TabularInline):
         "quantity",
         "price",
         "amount",
+        "required_date",
+        "possible_date",
     )
 
 
@@ -94,11 +96,20 @@ class CartItemAdmin(admin.ModelAdmin):
                     "client",
                     "good",
                     "quantity",
+                    "required_date",
+                    "possible_date",
                 )
             },
         ),
     )
-    list_display = ("client", "good", "quantity", "id")
+    list_display = (
+        "client",
+        "good",
+        "quantity",
+        "id",
+        "required_date",
+        "possible_date",
+    )
     list_filter = ("client",)
 
 

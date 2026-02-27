@@ -31,6 +31,8 @@ def cart_item_to_outgoing_schema(cart_item: CartItem) -> CartItemSchemaOutgoing:
         vat=vat,
         price_without_vat=round(_calculate_vat(price, vat), 2),
         amount_without_vat=round(_calculate_vat(amount, vat), 2),
+        required_date=cart_item.required_date,
+        possible_date=cart_item.possible_date,
     )
     return model
 
@@ -66,6 +68,8 @@ def order_item_to_outgoing_schema(order_item: OrderItem) -> OrderItemSchemaOutgo
         vat=vat,
         price_without_vat=round(_calculate_vat(float(order_item.price), vat), 2),
         amount_without_vat=round(_calculate_vat(float(order_item.amount), vat), 2),
+        required_date=order_item.required_date,
+        possible_date=order_item.possible_date,
     )
     return model
 

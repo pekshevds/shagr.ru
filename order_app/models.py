@@ -85,6 +85,12 @@ class OrderItem(Record):
         null=True,
         default=0,
     )
+    required_date = models.DateField(
+        verbose_name="Требуемая дата", blank=True, null=True
+    )
+    possible_date = models.DateField(
+        verbose_name="Возможная дата", blank=True, null=True
+    )
 
     def __str__(self) -> str:
         return f"{super().__str__()}, {self.good}"
@@ -117,6 +123,12 @@ class CartItem(Record):
         blank=True,
         null=True,
         default=0,
+    )
+    required_date = models.DateField(
+        verbose_name="Требуемая дата", blank=True, null=True
+    )
+    possible_date = models.DateField(
+        verbose_name="Возможная дата", blank=True, null=True
     )
 
     def __str__(self) -> str:
