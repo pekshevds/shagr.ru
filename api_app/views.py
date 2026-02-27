@@ -16,6 +16,7 @@ from order_app.schemas import (
     AddCartItemSchemaIncoming,
     NewOrderIncoming,
     OrderStatusListUpdateSchemaIncoming,
+    OrderStatusUpdateSchemaIncoming,
 )
 from client_app.models import Client
 from catalog_app.schemas import GoodListSchemaIncoming
@@ -267,4 +268,15 @@ class UpdateOrderStatusView(View):
             request.body.decode("utf-8")
         )
         order_service.update_order_statuses(data)
+        return JsonResponse({}, status=200)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class SetOrderStatusView(View):
+    @auth()
+    def post(self, request: HttpRequest, client: Client) -> JsonResponse:
+        data = OrderStatusUpdateSchemaIncoming.model_validate_json(
+            request.body.decode("utf-8")
+        )
+        order_service.set_order_status(data)
         return JsonResponse({}, status=200)

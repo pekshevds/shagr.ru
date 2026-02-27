@@ -5,6 +5,7 @@ from order_app.schemas import (
     OrderListSchemaOutgoing,
     OrderSchemaOutgoing,
     OrderStatusListUpdateSchemaIncoming,
+    OrderStatusUpdateSchemaIncoming,
     NewOrderIncoming,
     CartItemListSchemaOutgoing,
     AddCartItemSchemaIncoming,
@@ -21,6 +22,19 @@ from repositories import (
 
 from catalog_app.models import Good
 from converters import order_converter
+
+
+def set_order_status(data: OrderStatusUpdateSchemaIncoming) -> None:
+    status = order_repository.fetch_status_by_id(data.status_id)
+    if not status:
+        raise StatusOrder.DoesNotExist(
+            f"status with id={data.status_id} does not exist"
+        )
+    order = order_repository.fetch_order_by_id(data.order_id)
+    if not order:
+        raise Order.DoesNotExist(f"order with id={data.order_id} does not exist")
+    order.status = status
+    order_repository.update_orders_stutuses([order])
 
 
 def update_order_statuses(data: OrderStatusListUpdateSchemaIncoming) -> None:
