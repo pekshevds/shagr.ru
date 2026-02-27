@@ -39,6 +39,15 @@ class OrderSchemaOutgoing(BaseModel):
     items: list[OrderItemSchemaOutgoing] = Field(default=[])
 
 
+class AvailableStatusesSchemaOutgoing(BaseModel):
+    id: str = Field()
+    name: str = Field()
+
+
+class AvailableStatusesListSchemaOutgoing(BaseModel):
+    statuses: list[AvailableStatusesSchemaOutgoing] = Field()
+
+
 class OrderListSchemaOutgoing(BaseModel):
     orders: list[OrderSchemaOutgoing] = Field()
 

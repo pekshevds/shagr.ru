@@ -9,6 +9,8 @@ from order_app.schemas import (
     CartItemListSchemaOutgoing,
     AddCartItemSchemaIncoming,
     WishItemListSchemaOutgoing,
+    AvailableStatusesSchemaOutgoing,
+    AvailableStatusesListSchemaOutgoing,
 )
 
 from order_app.models import StatusOrder, Order
@@ -97,6 +99,18 @@ def fetch_new_orders() -> OrderListSchemaOutgoing:
         ]
         orders.append(order_schema)
     return OrderListSchemaOutgoing(orders=orders)
+
+
+def fetch_available_statuses() -> AvailableStatusesListSchemaOutgoing:
+    available_statuses = []
+    for status_item in order_repository.fetch_available_statuses():
+        available_statuses.append(
+            AvailableStatusesSchemaOutgoing(
+                id=status_item.id,
+                name=status_item.name,
+            )
+        )
+    return AvailableStatusesListSchemaOutgoing(statuses=available_statuses)
 
 
 def fetch_orders(

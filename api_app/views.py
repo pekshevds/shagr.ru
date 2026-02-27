@@ -252,6 +252,14 @@ class NewOrderView(View):
 
 
 @method_decorator(csrf_exempt, name="dispatch")
+class AvailableStatusesView(View):
+    @auth()
+    def get(self, request: HttpRequest, client: Client) -> JsonResponse:
+        available_statuses = order_service.fetch_available_statuses()
+        return JsonResponse(available_statuses.model_dump(), status=200)
+
+
+@method_decorator(csrf_exempt, name="dispatch")
 class UpdateOrderStatusView(View):
     @auth()
     def post(self, request: HttpRequest, client: Client) -> JsonResponse:

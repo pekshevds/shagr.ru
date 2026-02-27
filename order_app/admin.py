@@ -14,13 +14,22 @@ class StatusOrderAdmin(admin.ModelAdmin):
                     (
                         "is_active",
                         "is_closed",
+                        "is_available",
                     ),
                     "comment",
                 )
             },
         ),
     )
-    list_display = ("name", "is_active", "is_closed", "created_at", "updated_at", "id")
+    list_display = (
+        "name",
+        "is_active",
+        "is_closed",
+        "is_available",
+        "created_at",
+        "updated_at",
+        "id",
+    )
     search_fields = ("name",)
 
 

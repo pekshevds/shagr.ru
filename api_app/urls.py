@@ -17,6 +17,7 @@ from api_app.views import (
     ActiveOrderView,
     ClosedOrderView,
     NewOrderView,
+    AvailableStatusesView,
     UpdateOrderStatusView,
     UploadCatalogView,
 )
@@ -43,6 +44,7 @@ urlpatterns = [
     path("v1/orders/active/", ActiveOrderView.as_view()),
     path("v1/orders/closed/", ClosedOrderView.as_view()),
     path("v1/orders/get-new/", NewOrderView.as_view()),
+    path("v1/orders/available-statuses/", AvailableStatusesView.as_view()),
     path("v1/orders/update-statuses/", UpdateOrderStatusView.as_view()),
     path("v1/catalog/upload/", UploadCatalogView.as_view()),
 ]

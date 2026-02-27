@@ -7,6 +7,9 @@ from repositories import const_repository
 
 class StatusOrder(Directory):
     is_closed = models.BooleanField(verbose_name="Флаг закрытого заказа", default=False)
+    is_available = models.BooleanField(
+        verbose_name="Статус доступен для заказчика", default=False
+    )
 
     class Meta:
         verbose_name = "Статус заказа"

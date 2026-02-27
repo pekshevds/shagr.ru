@@ -33,6 +33,10 @@ def fetch_all_statuses() -> QuerySet[StatusOrder]:
     return StatusOrder.active_objects.all()
 
 
+def fetch_available_statuses() -> QuerySet[StatusOrder]:
+    return StatusOrder.objects.filter(is_active=True, is_available=True).all()
+
+
 def fetch_status_by_ids(ids: list[str]) -> QuerySet[StatusOrder]:
     return StatusOrder.objects.filter(id__in=ids).all()
 
