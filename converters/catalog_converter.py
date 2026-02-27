@@ -6,6 +6,7 @@ from catalog_app.schemas import (
     ImageSchemaOutgoing,
 )
 from server.services import calculate_vat
+from repositories.const_repository import fetch_last_vat
 
 
 def image_to_outgoing_schema(image: Image) -> ImageSchemaOutgoing | None:
@@ -40,7 +41,8 @@ def category_to_outgoing_schema(category: Category) -> CategorySchemaOutgoing:
 
 
 def good_to_outgoing_schema(good: Good) -> GoodSchemaOutgoing:
-    vat = float(good.vat.value) if good.vat else 0.0
+    _ = fetch_last_vat()
+    vat = float(good.vat.value) if good.vat else float(_.value)
     price = float(good.price)
     balance = float(good.balance)
     model = GoodSchemaOutgoing(
