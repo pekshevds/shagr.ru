@@ -84,6 +84,8 @@ class CartItemListSchemaOutgoing(BaseModel):
 class AddCartItemSchemaIncoming(BaseModel):
     good_slug: str = Field()
     quantity: float = Field(default=0.0)
+    required_date: datetime | None = Field(default=None)
+    possible_date: datetime | None = Field(default=None)
 
 
 class WishItemSchemaOutgoing(BaseModel):
