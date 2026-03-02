@@ -38,7 +38,6 @@ class Order(Document):
     sap_number = models.CharField(
         verbose_name="Номер в SAP",
         max_length=25,
-        null=True,
         blank=True,
         default="",
     )
