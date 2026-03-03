@@ -57,6 +57,8 @@ def create_order(order_items: list[dict[str, Any]], client: Client) -> Order:
         new_item.quantity = item.get("quantity")
         new_item.price = item.get("price")
         new_item.amount = item.get("amount")
+        new_item.required_date = item.get("required_date")
+        new_item.possible_date = item.get("possible_date")
         new_item.save()
     return new_order
 

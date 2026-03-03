@@ -58,6 +58,8 @@ class NewOrderItemIncoming(BaseModel):
     quantity: float = Field(default=0.0)
     price: float = Field(default=0.0)
     amount: float = Field(default=0.0)
+    required_date: datetime | None = Field(default=None)
+    possible_date: datetime | None = Field(default=None)
 
 
 class NewOrderIncoming(BaseModel):

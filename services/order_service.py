@@ -84,6 +84,8 @@ def _fill_order_items_by_incoming_data(
                     "quantity": item.quantity,
                     "price": item.price,
                     "amount": item.amount,
+                    "required_date": item.required_date,
+                    "possible_date": item.possible_date,
                 }
             )
     return data
