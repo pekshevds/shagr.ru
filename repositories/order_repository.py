@@ -90,12 +90,20 @@ def clear_cart(cart_owner: Client) -> None:
     return CartItem.objects.filter(client=cart_owner).delete()
 
 
-def set_item_to_cart(cart_owner: Client, good: Good, quantity: float) -> None:
+def set_item_to_cart(
+    cart_owner: Client,
+    good: Good,
+    quantity: float,
+    required_date: datetime | None = None,
+    possible_date: datetime | None = None,
+) -> None:
     item = fetch_cart_items(cart_owner).filter(good=good).first()
     if not item:
         item = CartItem.objects.create()
         item.client = cart_owner
         item.good = good
+    item.required_date = required_date
+    item.possible_date = possible_date
     item.quantity = decimal.Decimal(float(quantity))
     item.save()
 

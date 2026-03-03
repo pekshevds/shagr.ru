@@ -211,13 +211,17 @@ def clear_cart(client: Client) -> None:
 def set_item_to_cart(data: AddCartItemSchemaIncoming, client: Client) -> None:
     good = catalog_repository.fetch_good_by_slug(data.good_slug)
     if good:
-        order_repository.set_item_to_cart(client, good, data.quantity)
+        order_repository.set_item_to_cart(
+            client, good, data.quantity, data.required_date, data.possible_date
+        )
 
 
 def add_item_to_cart(data: AddCartItemSchemaIncoming, client: Client) -> None:
     good = catalog_repository.fetch_good_by_slug(data.good_slug)
     if good:
-        order_repository.add_item_to_cart(client, good, data.quantity)
+        order_repository.add_item_to_cart(
+            client, good, data.quantity, data.required_date, data.possible_date
+        )
 
 
 def drop_item_from_cart(data: AddCartItemSchemaIncoming, client: Client) -> None:
